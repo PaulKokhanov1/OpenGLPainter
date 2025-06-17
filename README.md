@@ -24,9 +24,9 @@
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
-    <li><a href="#genetic-algorithm">Genetic Algorithm</a></li>
-    <li><a href="#game-design">Game Design</a></li>
-    <li><a href="#next-steps">Next Steps</a></li>
+    <li><a href="#project-overview">Project Overview</a></li>
+    <li><a href="#technologies-used">Technologies Used</a></li>
+    <li><a href="#core-features">Core Features</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -122,6 +122,7 @@ Where M is a matrix and V is a vector. For example, the Model matrix would conta
 
 Though I’m not here to reiterate the things that can be found reading any OpenGL tutorial online, so I will be brief on these concepts and only really point out the ones that were interesting/new to me. Having said that, a cool idea when creating a “camera” object was that the scene moves around the camera, not the camera moving around the scene. Basically, we first find 3 perpendicular axes respective to the camera in world space, and using those axes we create what’s called a “LookAt” matrix that we use to transform all needed objects into the camera/view space simply through multiplication!
 
+<!-- RAY TRACING -->
 ### Ray-tracing
 
 Moving on to a little more mathematical concepts specific to this project. I’d like to talk about 3 things that I used my GREAT … PHENOMENAL … UNBEATABLE waterloo mathematics knowledge for.
