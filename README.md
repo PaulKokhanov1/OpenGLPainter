@@ -27,6 +27,8 @@
     <li><a href="#project-overview">Project Overview</a></li>
     <li><a href="#technologies-used">Technologies Used</a></li>
     <li><a href="#core-features">Core Features</a></li>
+    <li><a href="#technical-challenges-and-solutions">Technical Challenges & Solutions</a></li>
+    <li><a href="#core-features">Core Features</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
