@@ -29,6 +29,16 @@
     <li><a href="#core-features">Core Features</a></li>
     <li><a href="#challenges-and-solutions">Challenges and Solutions</a></li>
     <li><a href="#key-learning-outcomes">Key Learning Outcomes</a></li>
+     <li>
+      <a href="#rant-and-informal-discussion">Rant and Informal discussion</a>
+      <ul>
+        <li><a href="#opengl-basics">OpenGL basics</a></li>
+      </ul>
+      <ul>
+        <li><a href="#ray-tracing">Ray-tracing</a></li>
+      </ul>
+    </li>
+    <li><a href="#key-learning-outcomes">Key Learning Outcomes</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -96,7 +106,7 @@ In reality, I actually thoroughly enjoyed the process of learning the basics of 
 
 ---
 
-## Rants/ Informal discussions
+## Rant and Informal discussion
 
 Now that the formalities are out of the way, I can get into more of a discussion of the challenges, the successes and overall what I think about OpenGL.
 
