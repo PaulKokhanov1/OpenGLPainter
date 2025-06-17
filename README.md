@@ -65,7 +65,6 @@
         <li><a href="#ray-tracing">Ray-tracing</a></li>
       </ul>
     </li>
-    <li><a href="#key-learning-outcomes">Key Learning Outcomes</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -84,7 +83,7 @@ My intentions with this project was to create a simple fishing mechanic that can
 ### Built With
 
 * [![C++][Cpp.com]][Cpp-url]
-* [![Unreal Engine 5][Unreal.com]][Unreal-url]
+* [![OpenGL][Opengl.com]][Opengl-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -281,6 +280,8 @@ Paul Kokhanov - [Website](https://paulkokhanov.com/) - paul.kokhanov@gmail.com
 [unreal-url]: https://www.unrealengine.com/en-US/unreal-engine-5
 [Cpp.com]: https://img.shields.io/badge/C%2B%2B-white?style=for-the-badge&logo=cplusplus&logoColor=blue
 [Cpp-url]: https://isocpp.org/
+[Opengl.com]: https://img.shields.io/badge/Opengl-orange?style=for-the-badge&logo=opengl&logoColor=%23FFFFF&labelColor=%2300000
+[Opengl-url]: https://www.opengl.org/
 [CSharp.com]: https://img.shields.io/badge/C%23-%23512BD4?style=for-the-badge&logo=csharp&logoColor=white
 [CSharp-url]: https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit
 [Unity.com]: https://img.shields.io/badge/unity-0769AD?style=for-the-badge&logo=unity&logoColor=white
