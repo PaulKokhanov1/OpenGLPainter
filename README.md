@@ -203,8 +203,6 @@ I know this passion of mine for game development and working specifically with t
 
 Paul Kokhanov - [Website](https://paulkokhanov.com/) - paul.kokhanov@gmail.com
 
-Project Link: [https://github.com/PaulKokhanov1/FarmingSimulator](https://github.com/PaulKokhanov1/FarmingSimulator)
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
