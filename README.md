@@ -27,8 +27,8 @@
     <li><a href="#project-overview">Project Overview</a></li>
     <li><a href="#technologies-used">Technologies Used</a></li>
     <li><a href="#core-features">Core Features</a></li>
-    <li><a href="#technical-challenges-&-solutions">Technical Challenges & Solutions</a></li>
-    <li><a href="#core-features">Core Features</a></li>
+    <li><a href="#challenges-and-solutions">Challenges and Solutions</a></li>
+    <li><a href="#key-learning-outcomes">Key Learning Outcomes</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -76,7 +76,7 @@ In reality, I actually thoroughly enjoyed the process of learning the basics of 
 
 ---
 
-## Technical Challenges & Solutions
+## Challenges and Solutions
 
 | Challenge | Solution |
 | --------- | -------- |
