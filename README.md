@@ -205,6 +205,9 @@ P = O + D * t
 
 Where P is a point on the ray's half-line, O is the ray's origin, and D is the ray's direction, so we use t to find the point on the planes line.
 
+![image](https://github.com/user-attachments/assets/a3be1b5e-95f4-40b1-8bce-894709f4b1bf)
+
+
 Now one case I had trouble with was that I was intersecting with the plane even when not looking at it. This is due to the fact that t can be NEGATIVE, meaning the intersection algorithm is checking the line in both directions. Thus, a simple early return if t is negative would solve the issue.
 
 So, after some head banging in managing converting points between coordinate spaces, the plane intersection actually worked well, and it was time to move onto extending this intersection logic to ALL shapes.
@@ -280,7 +283,7 @@ Paul Kokhanov - [Website](https://paulkokhanov.com/) - paul.kokhanov@gmail.com
 [unreal-url]: https://www.unrealengine.com/en-US/unreal-engine-5
 [Cpp.com]: https://img.shields.io/badge/C%2B%2B-white?style=for-the-badge&logo=cplusplus&logoColor=blue
 [Cpp-url]: https://isocpp.org/
-[Opengl.com]: https://img.shields.io/badge/Opengl-orange?style=for-the-badge&logo=opengl&logoColor=%23FFFFF&labelColor=%2300000
+[Opengl.com]: https://img.shields.io/badge/Opengl-white?style=for-the-badge&logo=opengl&logoColor=%23FFFFF&labelColor=%2300000
 [Opengl-url]: https://www.opengl.org/
 [CSharp.com]: https://img.shields.io/badge/C%23-%23512BD4?style=for-the-badge&logo=csharp&logoColor=white
 [CSharp-url]: https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit
