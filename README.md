@@ -41,6 +41,17 @@
 
 
 
+
+<div align="center">
+  <a href="https://github.com/user-attachments/assets/ab66eee9-0280-4f9e-a82c-2dede33eed3c">
+    <img src="https://github.com/user-attachments/assets/b5a48ef1-6436-4c3c-9e50-f7086b3ab4a0" alt="Video Thumbnail" width="640" />
+    <br />
+    <strong>▶ Watch the 3D Painter Demo Video</strong>
+  </a>
+</div>
+
+
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
