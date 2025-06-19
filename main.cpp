@@ -71,7 +71,8 @@ void printVertexData(const std::string& name, const GLfloat* vertices, size_t ve
 }
 
 
-
+bool objectSpawn = false;
+glm::vec3 offscreenPos = glm::vec3(0.0f, 1000.0f, 0.0f);
 
 
 const unsigned int sectorCount = 12;
@@ -174,10 +175,10 @@ GLuint pyramidIndices[] = {
 GLfloat planeVertices[] = {
 	// Plane
 
--0.5f, 0.0f,  0.5f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
--0.5f, 0.0f, -0.5f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
- 0.5f, 0.0f, -0.5f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,
- 0.5f, 0.0f,  0.5f,		0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f
+-0.5f, 0.0f,  0.5f,		0.83f, 0.70f, 0.44f,		0.0f, 1.0f, 0.0f,
+-0.5f, 0.0f, -0.5f,		0.83f, 0.70f, 0.44f,		0.0f, 1.0f, 0.0f,
+ 0.5f, 0.0f, -0.5f,		0.83f, 0.70f, 0.44f,		0.0f, 1.0f, 0.0f,
+ 0.5f, 0.0f,  0.5f,		0.83f, 0.70f, 0.44f,		0.0f, 1.0f, 0.0f
 };
 
 GLuint planeIndices[] = {
@@ -192,10 +193,10 @@ GLuint planeIndices[] = {
 // Have to make Cube use more vertices so we can specify the normals and tex coords easier
 GLfloat cubeVertices[] = {
 	//COORDINATES     /        COLORS          /        NORMALS       //
-	-0.5f, -0.5f,  0.5f,	0.0f, 1.0f, 0.0f, 	0.0f, -1.0f, 0.0f,		// Bottom side
-	-0.5f, -0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	0.0f, -1.0f, 0.0f,		// Bottom side
-	 0.5f, -0.5f, -0.5f,	0.0f, 1.0f, 0.0f,	0.0f, -1.0f, 0.0f,		// Bottom side
-	 0.5f, -0.5f,  0.5f,	0.0f, 1.0f, 0.0f,	0.0f, -1.0f, 0.0f,		// Bottom side
+	-0.5f, -0.5f,  0.5f,	0.83f, 0.70f, 0.44f, 	0.0f, -1.0f, 0.0f,		// Bottom side
+	-0.5f, -0.5f, -0.5f,	0.83f, 0.70f, 0.44f,	0.0f, -1.0f, 0.0f,		// Bottom side
+	 0.5f, -0.5f, -0.5f,	0.83f, 0.70f, 0.44f,	0.0f, -1.0f, 0.0f,		// Bottom side
+	 0.5f, -0.5f,  0.5f,	0.83f, 0.70f, 0.44f,	0.0f, -1.0f, 0.0f,		// Bottom side
 	
 	-0.5f,  0.5f,  0.5f,	0.83f, 0.70f, 0.44f,	0.0f, 1.0f, 0.0f,		// Top side
 	-0.5f,  0.5f, -0.5f,	0.83f, 0.70f, 0.44f,	0.0f, 1.0f, 0.0f,		// Top side
@@ -505,23 +506,23 @@ int main() {
 	lightEBO.Unbind();
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);	// Completely white light color
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(500.5f, 0.5f, 0.5f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);	// how much to move our light 
 
-	glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 pyramidPos = offscreenPos;
 	glm::mat4 pyramidModel = glm::mat4(1.0f);
 	pyramidModel = glm::translate(pyramidModel, pyramidPos);	// basically our pyramid position in world space
 
-	glm::vec3 cubePos = glm::vec3(2.0f, 0.0f, -3.0f);
+	glm::vec3 cubePos = offscreenPos;
 	glm::mat4 cubeModel = glm::mat4(1.0f);
 	cubeModel = glm::translate(cubeModel, cubePos);
 
-	glm::vec3 spherePos = glm::vec3(2.0f, 0.0f, 0.0f);
+	glm::vec3 spherePos = offscreenPos;
 	glm::mat4 sphereModel = glm::mat4(1.0f);
 	sphereModel = glm::translate(sphereModel, spherePos);
 
-	glm::vec3 planePos = planeCenter;
+	glm::vec3 planePos = offscreenPos;
 	glm::mat4 planeModel = glm::mat4(1.0f);
 	planeModel = glm::translate(planeModel, planePos);
 
@@ -699,7 +700,7 @@ int main() {
 
 				VAO2.Bind();
 				VBO2.Bind();
-				glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW); //(GL_ARRAY_BUFFER, 0, sizeof(pyramidVertices), pyramidVertices);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 			}
 
 			//Testing Bounding Sphere intersection Sphere
@@ -708,11 +709,49 @@ int main() {
 			std::string intersectSphere = resultIndexSphere[0] != -1 ? "True" : "False";
 			std::cout << "Sphere Intersection: " + intersectSphere << std::endl;
 
+			if (resultIndexSphere[0] != -1) {
+
+
+				for (int j = 0; j < 3; ++j) {
+					int idx = resultIndexSphere[j];
+					int base = idx * 9;
+
+					// change color
+					sphereInfo[base + colorOffset] = color[0];
+					sphereInfo[base + colorOffset + 1] = color[1];
+					sphereInfo[base + colorOffset + 2] = color[2];
+				}
+				printVertexData("Sphere", sphereInfo.data(), sphereInfo.size());
+
+				VAO3.Bind();
+				VBO3.Bind();
+				glBufferData(GL_ARRAY_BUFFER, sphereInfo.size() * sizeof(GLfloat), sphereInfo.data(), GL_STATIC_DRAW);
+			}
+
 			//Testing Bounding Sphere intersection plane
 			int resultIndexPlane[3] = { -1, -1, -1 };
 			planeBoundingSphere.rayIntersectionTest(camera.Position, rayDir, resultIndexPlane);
 			std::string intersectPlane = resultIndexPlane[0] != -1 ? "True" : "False";
 			std::cout << "Plane Intersection: " + intersectPlane << std::endl;
+
+			if (resultIndexPlane[0] != -1) {
+
+
+				for (int j = 0; j < 3; ++j) {
+					int idx = resultIndexPlane[j];
+					int base = idx * 9;
+
+					// change color
+					planeVertices[base + colorOffset] = color[0];
+					planeVertices[base + colorOffset + 1] = color[1];
+					planeVertices[base + colorOffset + 2] = color[2];
+				}
+				printVertexData("Plane", planeVertices, sizeof(planeVertices) / sizeof(GLfloat));
+
+				VAO4.Bind();
+				VBO4.Bind();
+				glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+			}
 
 
 			camera.mouseHeld = true;
@@ -721,7 +760,105 @@ int main() {
 		{
 			// Prevent making multiple lines on a click
 			camera.mouseHeld = false;
+		}		
+		
+
+		if (!objectSpawn) {
+			if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+				// Show Pyramid
+				pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
+				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
+				pyramidBoundingSphere.center = pyramidPos;
+
+				// Hide others
+				cubePos = spherePos = planePos = offscreenPos;
+
+				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
+				cubeBoundingSphere.center = cubePos;
+
+				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
+				sphereBoundingSphere.center = spherePos;
+
+				planeModel = glm::translate(glm::mat4(1.0f), planePos);
+				planeBoundingSphere.center = planePos;
+
+				objectSpawn = true;
+				std::cout << "Pyramid visible\n";
+			}
+			else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+				// Show Cube
+				cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
+				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
+				cubeBoundingSphere.center = cubePos;
+
+				// Hide others
+				pyramidPos = spherePos = planePos = offscreenPos;
+
+				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
+				pyramidBoundingSphere.center = pyramidPos;
+
+				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
+				sphereBoundingSphere.center = spherePos;
+
+				planeModel = glm::translate(glm::mat4(1.0f), planePos);
+				planeBoundingSphere.center = planePos;
+
+				objectSpawn = true;
+				std::cout << "Cube visible\n";
+			}
+			else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+				// Show Sphere
+				spherePos = glm::vec3(0.0f, 0.0f, 0.0f);
+				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
+				sphereBoundingSphere.center = spherePos;
+
+				// Hide others
+				pyramidPos = cubePos = planePos = offscreenPos;
+
+				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
+				pyramidBoundingSphere.center = pyramidPos;
+
+				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
+				cubeBoundingSphere.center = cubePos;
+
+				planeModel = glm::translate(glm::mat4(1.0f), planePos);
+				planeBoundingSphere.center = planePos;
+
+				objectSpawn = true;
+				std::cout << "Sphere visible\n";
+			}
+			else if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) {
+				// Show Plane
+				planePos = glm::vec3(0.0f, 0.0f, 0.0f);
+				planeModel = glm::translate(glm::mat4(1.0f), planePos);
+				planeBoundingSphere.center = planePos;
+
+				// Hide others
+				pyramidPos = cubePos = spherePos = offscreenPos;
+
+				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
+				pyramidBoundingSphere.center = pyramidPos;
+
+				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
+				cubeBoundingSphere.center = cubePos;
+
+				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
+				sphereBoundingSphere.center = spherePos;
+
+				objectSpawn = true;
+				std::cout << "Plane visible\n";
+			}
 		}
+
+		// Reset flag when key is released
+		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE &&
+			glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE &&
+			glfwGetKey(window, GLFW_KEY_3) == GLFW_RELEASE &&
+			glfwGetKey(window, GLFW_KEY_4) == GLFW_RELEASE)
+		{
+			objectSpawn = false;
+		}
+
 
 		if (line1.created) {
 			line1.setMVP(camera.projection * camera.view);

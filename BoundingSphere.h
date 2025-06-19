@@ -5,6 +5,7 @@
 #include<glm/glm.hpp>
 #include<stb/stb_image.h>
 #include <string>
+#include <limits>
 #include"PMath.h"
 
 
@@ -30,7 +31,7 @@ public:
 	void rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, int* resultIndex);
 
 	//Moller-Trumbore Algorithm to test ray against each of the meshes triangles
-	bool MTAlgo(const glm::vec3& orig, const glm::vec3& dir, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2);
+	bool MTAlgo(const glm::vec3& orig, const glm::vec3& dir, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, float &t);
 
 	void printMeshData();
 };

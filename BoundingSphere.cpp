@@ -45,6 +45,8 @@ void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, 
         << hitPoint.z << ")\n";
 
     // Call MT Algo to test intersection on the meshes triangles
+    float t = 0; // Solution for triangle intersection 
+    float closestIntersectiontValue = std::numeric_limits<float>::max();
     for (int i = 0; i < indices.size(); i += 3) {
         glm::vec3 v0 = vertices[indices[i]];
         glm::vec3 v1 = vertices[indices[i + 1]];
@@ -57,7 +59,7 @@ void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, 
         glm::vec3 wv2 = PMath::localToWorldSpaceConv((*model), v2);
 
 
-        if (MTAlgo(rayOrigin, rayDir, wv0, wv1, wv2)) {
+        if (MTAlgo(rayOrigin, rayDir, wv0, wv1, wv2, t)) {
             std::cout << "Intersection found on triangle:\n"
                 << "Indices: [" << indices[i] << ", "
                 << indices[i + 1] << ", "
@@ -66,18 +68,21 @@ void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, 
                 << "v1: (" << wv1.x << ", " << wv1.y << ", " << wv1.z << ")\n"
                 << "v2: (" << wv2.x << ", " << wv2.y << ", " << wv2.z << ")\n";
 
-            resultIndexes[0] = indices[i];
-            resultIndexes[1] = indices[i + 1];
-            resultIndexes[2] = indices[i + 2];
+            if (t < closestIntersectiontValue) {
+                closestIntersectiontValue = t;
 
-            return;
+                resultIndexes[0] = indices[i];
+                resultIndexes[1] = indices[i + 1];
+                resultIndexes[2] = indices[i + 2];
+            }
         }
+
     }
 
     return;
 }
 
-bool BoundingSphere::MTAlgo(const glm::vec3 & orig, const glm::vec3& dir, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2)
+bool BoundingSphere::MTAlgo(const glm::vec3 & orig, const glm::vec3& dir, const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2, float& t)
 {
     //orig = ray origin
     // dir = ray dir
@@ -86,7 +91,6 @@ bool BoundingSphere::MTAlgo(const glm::vec3 & orig, const glm::vec3& dir, const 
     // u, v are barycentric coords that define a point inside a unit triangle
 
 
-    float t;
     glm::vec3 v0v1 = v1 - v0;
     glm::vec3 v0v2 = v2 - v0;
     glm::vec3 pvec = glm::cross(dir, v0v2);
@@ -95,7 +99,7 @@ bool BoundingSphere::MTAlgo(const glm::vec3 & orig, const glm::vec3& dir, const 
     // If the determinant is negative, the triangle is back-facing.
     // If the determinant is close to 0, the ray misses the triangle.
     // If det is close to 0, the ray and triangle are parallel.
-    if (det < kEpsilon) return false;
+    if (fabs(det) < kEpsilon) return false;
     float invDet = 1 / det;
 
     glm::vec3 tvec = orig - v0;
