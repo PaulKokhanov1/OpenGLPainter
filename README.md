@@ -40,6 +40,14 @@
 </div>
 
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=3P6Bi_mozk8" target="_blank">
+    <img src="https://img.youtube.com/vi/3P6Bi_mozk8/0.jpg" alt="OpenGL 3D Painter Demo" width="640" />
+  </a>
+</p>
+
+
+
 
 <!-- TABLE OF CONTENTS -->
 <details>
