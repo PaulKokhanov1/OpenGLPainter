@@ -16,6 +16,8 @@
 class PMath {
 
 public:
+	static const GLfloat shapeVertexStrides;
+	static const glm::vec3 offScreenPos;
 
 	static bool solveQuadratic(const float& a, const float& b, const float& c, float& x0, float& x1)
 	{

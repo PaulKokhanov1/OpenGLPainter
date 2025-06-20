@@ -142,9 +142,12 @@
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PMath.cpp" />
+    <ClCompile Include="RenderableObject.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UtilsP.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
@@ -160,8 +163,10 @@
     <ClInclude Include="EBO.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="PMath.h" />
+    <ClInclude Include="RenderableObject.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UtilsP.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
   </ItemGroup>

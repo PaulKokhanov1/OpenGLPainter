@@ -18,57 +18,11 @@
 #include"Line.h"
 #include"BoundingSphere.h"
 #include"PMath.h"
+#include"RenderableObject.h"
+#include"UtilsP.h"
 
 const unsigned int width = 800;
 const unsigned int height = 800;
-
-void printVec3(const glm::vec3& v, const std::string& label = "Vec3") {
-	std::cout << label << ": ("
-		<< v.x << ", "
-		<< v.y << ", "
-		<< v.z << ")" << std::endl;
-};
-
-void printMat4(const glm::mat4& mat, const std::string& label = "Matrix") {
-	std::cout << label << ":\n";
-	for (int row = 0; row < 4; ++row) {
-		std::cout << "| ";
-		for (int col = 0; col < 4; ++col) {
-			std::cout << mat[col][row] << "\t";  // GLM is column-major
-		}
-		std::cout << "|\n";
-	}
-	std::cout << std::endl;
-};
-
-void printVertexData(const std::string& name, const GLfloat* vertices, size_t vertexCount) {
-	const int stride = 9; // position (3), color (3), normal (3)
-	size_t numVertices = vertexCount / stride;
-
-	std::cout << "=== Vertex Data for Object: " << name << " ===\n";
-
-	for (size_t i = 0; i < numVertices; ++i) {
-		size_t base = i * stride;
-
-		float x = vertices[base + 0];
-		float y = vertices[base + 1];
-		float z = vertices[base + 2];
-
-		float r = vertices[base + 3];
-		float g = vertices[base + 4];
-		float b = vertices[base + 5];
-
-		float nx = vertices[base + 6];
-		float ny = vertices[base + 7];
-		float nz = vertices[base + 8];
-
-		std::cout << std::fixed << std::setprecision(2)
-			<< "Vertex " << std::setw(2) << i << ": ("
-			<< x << ", " << y << ", " << z << ") | "
-			<< "Color: (" << r << ", " << g << ", " << b << ") | "
-			<< "Normal: (" << nx << ", " << ny << ", " << nz << ")\n";
-	}
-}
 
 
 bool objectSpawn = false;
@@ -409,24 +363,8 @@ int main() {
 	// Generates Shader object using shaders defualt.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
-	// Generates Vertex Array Object and binds it
-	VAO VAO1;
-	VAO1.Bind();
-
-	// PYRAMID OBEJCT
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO1(pyramidVertices, sizeof(pyramidVertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO EBO1(pyramidIndices, sizeof(pyramidIndices));
-
-	// Links VBO to VAO, we use two LinkAttrib because now we have two inputs to our vertex shader
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, shapeVertexStrides, (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, shapeVertexStrides, (void*)(3 * sizeof(float)));
-	VAO1.LinkAttrib(VBO1, 2, 3, GL_FLOAT, shapeVertexStrides, (void*)(6 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
+	// TESTING CLASS FOR SHAPES, FIRST MAKE PYRAMID
+	RenderableObject pyramid("pyramid", pyramidVertices, sizeof(pyramidVertices), pyramidIndices, sizeof(pyramidIndices));
 
 	// CUBE OBJECT
 	// Generates Vertex Array Object and binds it
@@ -553,7 +491,7 @@ int main() {
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
 	glUniform4f(glGetUniformLocation(lightShader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	shaderProgram.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramid.model));
 	glUniform4f(glGetUniformLocation(shaderProgram.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 	glUniform3f(glGetUniformLocation(shaderProgram.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 
@@ -589,13 +527,8 @@ int main() {
 		glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
 		camera.Matrix(shaderProgram, "camMatrix");
 
+		pyramid.draw(shaderProgram);	// MUST BE CALLED AFTER ACTIVATION OF SHADER PROGRAM
 
-		// Pyramid Object
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
-		// Bind the VAO so OpenGL knows to use it
-		VAO1.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(pyramidIndices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
 		// Cube Object
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(cubeModel));
@@ -652,31 +585,8 @@ int main() {
 			//std::cout << "Intersection: " + intersect << std::endl;
 
 
-			//Testing Bounding Sphere intersection Pyramid
-			int resultIndexPyramid[3] = { -1, -1, -1 };
-			pyramidBoundingSphere.rayIntersectionTest(camera.Position, rayDir, resultIndexPyramid);
-			std::string intersectPyramid = resultIndexPyramid[0] != -1 ? "True" : "False";
-			std::cout << "Pyramid Intersection: " + intersectPyramid << std::endl;
+			pyramid.testIntersection(camera.Position, rayDir, color );
 
-			if (resultIndexPyramid[0] != -1) {
-
-
-				for (int j = 0; j < 3; ++j) {
-					int idx = resultIndexPyramid[j];
-					int base = idx * 9;
-
-					// change color
-					pyramidVertices[base + colorOffset] = color[0];
-					pyramidVertices[base + colorOffset + 1] = color[1];
-					pyramidVertices[base + colorOffset + 2] = color[2];
-				}
-				printVertexData("Pyramid", pyramidVertices, sizeof(pyramidVertices) / sizeof(GLfloat));
-
-				VAO1.Bind();
-				VBO1.Bind();
-				glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidVertices), pyramidVertices, GL_STATIC_DRAW); //(GL_ARRAY_BUFFER, 0, sizeof(pyramidVertices), pyramidVertices);
-
-			}
 
 			//Testing Bounding Sphere intersection Cube
 			int resultIndexCube[3] = { -1, -1, -1 };
@@ -696,7 +606,7 @@ int main() {
 					cubeVertices[base + colorOffset + 1] = color[1];
 					cubeVertices[base + colorOffset + 2] = color[2];
 				}
-				printVertexData("Cube", cubeVertices, sizeof(cubeVertices) / sizeof(GLfloat));
+				UtilsP::printVertexData("Cube", cubeVertices, sizeof(cubeVertices) / sizeof(GLfloat));
 
 				VAO2.Bind();
 				VBO2.Bind();
@@ -721,7 +631,7 @@ int main() {
 					sphereInfo[base + colorOffset + 1] = color[1];
 					sphereInfo[base + colorOffset + 2] = color[2];
 				}
-				printVertexData("Sphere", sphereInfo.data(), sphereInfo.size());
+				UtilsP::printVertexData("Sphere", sphereInfo.data(), sphereInfo.size());
 
 				VAO3.Bind();
 				VBO3.Bind();
@@ -746,7 +656,7 @@ int main() {
 					planeVertices[base + colorOffset + 1] = color[1];
 					planeVertices[base + colorOffset + 2] = color[2];
 				}
-				printVertexData("Plane", planeVertices, sizeof(planeVertices) / sizeof(GLfloat));
+				UtilsP::printVertexData("Plane", planeVertices, sizeof(planeVertices) / sizeof(GLfloat));
 
 				VAO4.Bind();
 				VBO4.Bind();
@@ -766,9 +676,8 @@ int main() {
 		if (!objectSpawn) {
 			if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
 				// Show Pyramid
-				pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
-				pyramidBoundingSphere.center = pyramidPos;
+
+				pyramid.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
 				// Hide others
 				cubePos = spherePos = planePos = offscreenPos;
@@ -882,9 +791,7 @@ int main() {
 	}
 
 	// Delete all the objects we've created
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();	
+	pyramid.Delete();
 	VAO2.Delete();
 	VBO2.Delete();
 	EBO2.Delete();	
