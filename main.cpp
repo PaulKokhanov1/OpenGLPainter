@@ -365,65 +365,9 @@ int main() {
 
 	// TESTING CLASS FOR SHAPES, FIRST MAKE PYRAMID
 	RenderableObject pyramid("pyramid", pyramidVertices, sizeof(pyramidVertices), pyramidIndices, sizeof(pyramidIndices));
-
-	// CUBE OBJECT
-	// Generates Vertex Array Object and binds it
-	VAO VAO2;
-	VAO2.Bind();
-
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO2(cubeVertices, sizeof(cubeVertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO EBO2(cubeIndices, sizeof(cubeIndices));
-
-	// Links VBO to VAO, we use two LinkAttrib because now we have two inputs to our vertex shader
-	VAO2.LinkAttrib(VBO2, 0, 3, GL_FLOAT, shapeVertexStrides, (void*)0);
-	VAO2.LinkAttrib(VBO2, 1, 3, GL_FLOAT, shapeVertexStrides, (void*)(3 * sizeof(float)));
-	VAO2.LinkAttrib(VBO2, 2, 3, GL_FLOAT, shapeVertexStrides, (void*)(6 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
-	VAO2.Unbind();
-	VBO2.Unbind();
-	EBO2.Unbind();
-
-
-	// SPHERE OBJECT
-	// Generates Vertex Array Object and binds it
-	VAO VAO3;
-	VAO3.Bind();
-
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO3(sphereInfo.data(), sphereInfo.size() * sizeof(GLfloat));
-	// Generates Element Buffer Object and links it to indices
-	EBO EBO3(sphereIndices.data(), sphereIndices.size() * sizeof(GLfloat));
-
-	// Links VBO to VAO, we use two LinkAttrib because now we have two inputs to our vertex shader
-	VAO3.LinkAttrib(VBO3, 0, 3, GL_FLOAT, shapeVertexStrides, (void*)0);
-	VAO3.LinkAttrib(VBO3, 1, 3, GL_FLOAT, shapeVertexStrides, (void*)(3 * sizeof(float)));
-	VAO3.LinkAttrib(VBO3, 2, 3, GL_FLOAT, shapeVertexStrides, (void*)(6 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
-	VAO3.Unbind();
-	VBO3.Unbind();
-	EBO3.Unbind();
-
-	//PLANE OBJECT
-	//	Generates Vertex Array Object and binds it
-	VAO VAO4;
-	VAO4.Bind();
-
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO4(planeVertices, sizeof(planeVertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO EBO4(planeIndices, sizeof(planeIndices));
-
-
-	// Links VBO to VAO, we use two LinkAttrib because now we have two inputs to our vertex shader
-	VAO4.LinkAttrib(VBO4, 0, 3, GL_FLOAT, shapeVertexStrides, (void*)0);
-	VAO4.LinkAttrib(VBO4, 1, 3, GL_FLOAT, shapeVertexStrides, (void*)(3 * sizeof(float)));
-	VAO4.LinkAttrib(VBO4, 2, 3, GL_FLOAT, shapeVertexStrides, (void*)(6 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
-	VAO4.Unbind();
-	VBO4.Unbind();
-	EBO4.Unbind();
+	RenderableObject cube("cube", cubeVertices, sizeof(cubeVertices), cubeIndices, sizeof(cubeIndices));
+	RenderableObject sphere("sphere", sphereInfo.data(), sphereInfo.size() * sizeof(GLfloat), sphereIndices.data(), sphereIndices.size() * sizeof(GLfloat));
+	RenderableObject plane("plane", planeVertices, sizeof(planeVertices), planeIndices, sizeof(planeIndices));
 
 	//----------------------------------------------------------------------------------------------------------
 
@@ -448,44 +392,10 @@ int main() {
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);	// how much to move our light 
 
-	glm::vec3 pyramidPos = offscreenPos;
-	glm::mat4 pyramidModel = glm::mat4(1.0f);
-	pyramidModel = glm::translate(pyramidModel, pyramidPos);	// basically our pyramid position in world space
-
-	glm::vec3 cubePos = offscreenPos;
-	glm::mat4 cubeModel = glm::mat4(1.0f);
-	cubeModel = glm::translate(cubeModel, cubePos);
-
-	glm::vec3 spherePos = offscreenPos;
-	glm::mat4 sphereModel = glm::mat4(1.0f);
-	sphereModel = glm::translate(sphereModel, spherePos);
-
-	glm::vec3 planePos = offscreenPos;
-	glm::mat4 planeModel = glm::mat4(1.0f);
-	planeModel = glm::translate(planeModel, planePos);
-
-
-	// Create all bounding spheres for each obj
-
-	//create bounding sphere for pyramid obj
-	glm::vec3 pyramidCenterPointtWS = pyramidPos;
-	float pyramidLocalRadius = glm::length(glm::vec3(0.5f, 0.8f, 0.5f));  // Furthest point from origin, we dont scale when moving to WS so dont worry about scaling yet
-	BoundingSphere pyramidBoundingSphere("pyramid", pyramidCenterPointtWS, pyramidLocalRadius, pyramidVertices, sizeof(pyramidVertices) / sizeof(GLfloat), pyramidIndices, sizeof(pyramidIndices) / sizeof(GLuint), &pyramidModel);	// for now just ingore the transformations, that we'd do on the coords
-
-	//create bounding sphere for cube obj
-	glm::vec3 cubeCenterPointtWS = cubePos;
-	float cubeLocalRadius = glm::length(glm::vec3(-0.5f, 0.5f, 0.5f));  // Furthest point from origin, we dont scale when moving to WS so dont worry about scaling yet
-	BoundingSphere cubeBoundingSphere("cube", cubeCenterPointtWS, cubeLocalRadius, cubeVertices, sizeof(cubeVertices) / sizeof(GLfloat), cubeIndices, sizeof(cubeIndices) / sizeof(GLuint), &cubeModel);
-
-	//create bounding sphere for sphere obj
-	glm::vec3 sphereCenterPointtWS = spherePos;
-	float sphereLocalRadius = radius;
-	BoundingSphere sphereBoundingSphere("sphere", sphereCenterPointtWS, sphereLocalRadius, sphereInfo.data(), sphereInfo.size(), sphereIndices.data(), sphereIndices.size(), &sphereModel);
-
-	//create bounding sphere for plane obj
-	glm::vec3 planeCenterPointtWS = planePos;
-	float planeLocalRadius = 0.5f;
-	BoundingSphere planeBoundingSphere("plane", planeCenterPointtWS, planeLocalRadius, planeVertices, sizeof(planeVertices) / sizeof(GLfloat), planeIndices, sizeof(planeIndices) / sizeof(GLuint), &planeModel);
+	pyramid.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	cube.setPosition(offscreenPos);
+	sphere.setPosition(offscreenPos);
+	plane.setPosition(offscreenPos);
 
 	lightShader.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel));
@@ -528,28 +438,10 @@ int main() {
 		camera.Matrix(shaderProgram, "camMatrix");
 
 		pyramid.draw(shaderProgram);	// MUST BE CALLED AFTER ACTIVATION OF SHADER PROGRAM
+		cube.draw(shaderProgram);
+		sphere.draw(shaderProgram);
+		plane.draw(shaderProgram);
 
-
-		// Cube Object
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(cubeModel));
-		// Bind the VAO so OpenGL knows to use it
-		VAO2.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
-
-		// Sphere Object
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(sphereModel));
-		// Bind the VAO so OpenGL knows to use it
-		VAO3.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sphereIndices.size(), GL_UNSIGNED_INT, 0);
-
-		// Plane Object
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(planeModel));
-		// Bind the VAO so OpenGL knows to use it
-		VAO4.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(planeIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 		// Handles mouse inputs
 		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -586,82 +478,9 @@ int main() {
 
 
 			pyramid.testIntersection(camera.Position, rayDir, color );
-
-
-			//Testing Bounding Sphere intersection Cube
-			int resultIndexCube[3] = { -1, -1, -1 };
-			cubeBoundingSphere.rayIntersectionTest(camera.Position, rayDir, resultIndexCube);
-			std::string intersectCube = resultIndexCube[0] != -1 ? "True" : "False";
-			std::cout << "Cube Intersection: " + intersectCube << std::endl;
-
-			if (resultIndexCube[0] != -1) {
-
-
-				for (int j = 0; j < 3; ++j) {
-					int idx = resultIndexCube[j];
-					int base = idx * 9;
-
-					// change color
-					cubeVertices[base + colorOffset] = color[0];
-					cubeVertices[base + colorOffset + 1] = color[1];
-					cubeVertices[base + colorOffset + 2] = color[2];
-				}
-				UtilsP::printVertexData("Cube", cubeVertices, sizeof(cubeVertices) / sizeof(GLfloat));
-
-				VAO2.Bind();
-				VBO2.Bind();
-				glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-			}
-
-			//Testing Bounding Sphere intersection Sphere
-			int resultIndexSphere[3] = { -1, -1, -1 };
-			sphereBoundingSphere.rayIntersectionTest(camera.Position, rayDir, resultIndexSphere);
-			std::string intersectSphere = resultIndexSphere[0] != -1 ? "True" : "False";
-			std::cout << "Sphere Intersection: " + intersectSphere << std::endl;
-
-			if (resultIndexSphere[0] != -1) {
-
-
-				for (int j = 0; j < 3; ++j) {
-					int idx = resultIndexSphere[j];
-					int base = idx * 9;
-
-					// change color
-					sphereInfo[base + colorOffset] = color[0];
-					sphereInfo[base + colorOffset + 1] = color[1];
-					sphereInfo[base + colorOffset + 2] = color[2];
-				}
-				UtilsP::printVertexData("Sphere", sphereInfo.data(), sphereInfo.size());
-
-				VAO3.Bind();
-				VBO3.Bind();
-				glBufferData(GL_ARRAY_BUFFER, sphereInfo.size() * sizeof(GLfloat), sphereInfo.data(), GL_STATIC_DRAW);
-			}
-
-			//Testing Bounding Sphere intersection plane
-			int resultIndexPlane[3] = { -1, -1, -1 };
-			planeBoundingSphere.rayIntersectionTest(camera.Position, rayDir, resultIndexPlane);
-			std::string intersectPlane = resultIndexPlane[0] != -1 ? "True" : "False";
-			std::cout << "Plane Intersection: " + intersectPlane << std::endl;
-
-			if (resultIndexPlane[0] != -1) {
-
-
-				for (int j = 0; j < 3; ++j) {
-					int idx = resultIndexPlane[j];
-					int base = idx * 9;
-
-					// change color
-					planeVertices[base + colorOffset] = color[0];
-					planeVertices[base + colorOffset + 1] = color[1];
-					planeVertices[base + colorOffset + 2] = color[2];
-				}
-				UtilsP::printVertexData("Plane", planeVertices, sizeof(planeVertices) / sizeof(GLfloat));
-
-				VAO4.Bind();
-				VBO4.Bind();
-				glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-			}
+			cube.testIntersection(camera.Position, rayDir, color);
+			sphere.testIntersection(camera.Position, rayDir, color);
+			plane.testIntersection(camera.Position, rayDir, color);
 
 
 			camera.mouseHeld = true;
@@ -680,79 +499,46 @@ int main() {
 				pyramid.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
 				// Hide others
-				cubePos = spherePos = planePos = offscreenPos;
+				cube.setPosition(offscreenPos);
+				sphere.setPosition(offscreenPos);
+				plane.setPosition(offscreenPos);
 
-				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
-				cubeBoundingSphere.center = cubePos;
-
-				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
-				sphereBoundingSphere.center = spherePos;
-
-				planeModel = glm::translate(glm::mat4(1.0f), planePos);
-				planeBoundingSphere.center = planePos;
 
 				objectSpawn = true;
 				std::cout << "Pyramid visible\n";
 			}
 			else if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
 				// Show Cube
-				cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
-				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
-				cubeBoundingSphere.center = cubePos;
+				cube.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
 				// Hide others
-				pyramidPos = spherePos = planePos = offscreenPos;
+				pyramid.setPosition(offscreenPos);
+				sphere.setPosition(offscreenPos);
+				plane.setPosition(offscreenPos);
 
-				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
-				pyramidBoundingSphere.center = pyramidPos;
-
-				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
-				sphereBoundingSphere.center = spherePos;
-
-				planeModel = glm::translate(glm::mat4(1.0f), planePos);
-				planeBoundingSphere.center = planePos;
 
 				objectSpawn = true;
 				std::cout << "Cube visible\n";
 			}
 			else if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
 				// Show Sphere
-				spherePos = glm::vec3(0.0f, 0.0f, 0.0f);
-				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
-				sphereBoundingSphere.center = spherePos;
+				sphere.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-				// Hide others
-				pyramidPos = cubePos = planePos = offscreenPos;
+				pyramid.setPosition(offscreenPos);
+				cube.setPosition(offscreenPos);
+				plane.setPosition(offscreenPos);
 
-				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
-				pyramidBoundingSphere.center = pyramidPos;
-
-				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
-				cubeBoundingSphere.center = cubePos;
-
-				planeModel = glm::translate(glm::mat4(1.0f), planePos);
-				planeBoundingSphere.center = planePos;
 
 				objectSpawn = true;
 				std::cout << "Sphere visible\n";
 			}
 			else if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS) {
 				// Show Plane
-				planePos = glm::vec3(0.0f, 0.0f, 0.0f);
-				planeModel = glm::translate(glm::mat4(1.0f), planePos);
-				planeBoundingSphere.center = planePos;
+				plane.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-				// Hide others
-				pyramidPos = cubePos = spherePos = offscreenPos;
-
-				pyramidModel = glm::translate(glm::mat4(1.0f), pyramidPos);
-				pyramidBoundingSphere.center = pyramidPos;
-
-				cubeModel = glm::translate(glm::mat4(1.0f), cubePos);
-				cubeBoundingSphere.center = cubePos;
-
-				sphereModel = glm::translate(glm::mat4(1.0f), spherePos);
-				sphereBoundingSphere.center = spherePos;
+				pyramid.setPosition(offscreenPos);
+				cube.setPosition(offscreenPos);
+				sphere.setPosition(offscreenPos);
 
 				objectSpawn = true;
 				std::cout << "Plane visible\n";
@@ -792,15 +578,9 @@ int main() {
 
 	// Delete all the objects we've created
 	pyramid.Delete();
-	VAO2.Delete();
-	VBO2.Delete();
-	EBO2.Delete();	
-	VAO3.Delete();
-	VBO3.Delete();
-	EBO3.Delete();
-	VAO4.Delete();
-	VBO4.Delete();
-	EBO4.Delete();
+	cube.Delete();
+	sphere.Delete();
+	plane.Delete();
 	shaderProgram.Delete();
 	lightVAO.Delete();
 	lightVBO.Delete();

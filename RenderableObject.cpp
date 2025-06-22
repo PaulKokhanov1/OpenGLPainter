@@ -36,7 +36,7 @@ RenderableObject::RenderableObject(std::string name, GLfloat* verts, GLsizeiptr 
 void RenderableObject::setPosition(glm::vec3 pos)
 {
 	position = pos;
-	model = glm::translate(glm::mat4(1.0f), pos);
+	model = glm::translate(glm::mat4(1.0f), pos);	// Will NEED TO CHANGE MODEL LATER
 	bounding->center = pos;
 }
 
@@ -70,7 +70,7 @@ void RenderableObject::testIntersection(const glm::vec3& rayOrigin, const glm::v
 			vertices[base + UtilsP::colorOffset + 1] = color[1];
 			vertices[base + UtilsP::colorOffset + 2] = color[2];
 		}
-		UtilsP::printVertexData(name, vertices, vertexSize / sizeof(GLfloat));
+		//UtilsP::printVertexData(name, vertices, vertexSize / sizeof(GLfloat));
 
 		vao.Bind();
 		vbo->Bind();

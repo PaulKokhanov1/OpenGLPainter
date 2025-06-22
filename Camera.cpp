@@ -103,20 +103,10 @@ void Camera::Inputs(GLFWwindow* window){
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && false == true)
 	{
 		glm::vec4 worldRay = mosPosToWorldSpace(window);
-		std::cout << "World Ray: ("
-			<< worldRay.x << ", "
-			<< worldRay.y << ", "
-			<< worldRay.z << ", "
-			<< worldRay.w << ")" << std::endl;
 
 		// Create debug line from camera position to world position
 		glm::vec3 end = Position + glm::vec3(worldRay) * 10.0f;
-/*		Line line(Position, end);
-		line.setMVP(projection * view );
-		line.setColor(glm::vec3(1, 1, 1));
-		line.draw()*/;
 
-		//debugLines.push_back(std::move(line));
 		mouseHeld = true;		
 	}
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
@@ -151,11 +141,6 @@ glm::vec4 Camera::mosPosToWorldSpace(GLFWwindow* window)
 
 	// THIS is camera pos
 	glm::vec3 camPos = glm::vec3(glm::inverse(view)[3]);
-	std::cout << "Camera World Position: ("
-		<< camPos.x << ", "
-		<< camPos.y << ", "
-		<< camPos.z << ")\n";
-
 
 	return ray_world;
 }

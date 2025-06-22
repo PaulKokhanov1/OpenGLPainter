@@ -18,7 +18,7 @@ BoundingSphere::BoundingSphere(const std::string& name, glm::vec3 centerWS, GLfl
     }
 
     // Used for Debugging
-    printMeshData();
+    //printMeshData();
 }
 
 void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, int* resultIndexes)
@@ -39,11 +39,6 @@ void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, 
 
     glm::vec3 hitPoint = rayOrigin + rayDir * t0;	// calculate hit point using ray's parametric eq\
 
-    std::cout << "Hit Point for shape: " << name << "("
-        << hitPoint.x << ", "
-        << hitPoint.y << ", "
-        << hitPoint.z << ")\n";
-
     // Call MT Algo to test intersection on the meshes triangles
     float t = 0; // Solution for triangle intersection 
     float closestIntersectiontValue = std::numeric_limits<float>::max();
@@ -60,14 +55,6 @@ void BoundingSphere::rayIntersectionTest(glm::vec3 rayOrigin, glm::vec3 rayDir, 
 
 
         if (MTAlgo(rayOrigin, rayDir, wv0, wv1, wv2, t)) {
-            std::cout << "Intersection found on triangle:\n"
-                << "Indices: [" << indices[i] << ", "
-                << indices[i + 1] << ", "
-                << indices[i + 2] << "]\n"
-                << "v0: (" << wv0.x << ", " << wv0.y << ", " << wv0.z << ")\n"
-                << "v1: (" << wv1.x << ", " << wv1.y << ", " << wv1.z << ")\n"
-                << "v2: (" << wv2.x << ", " << wv2.y << ", " << wv2.z << ")\n";
-
             if (t < closestIntersectiontValue) {
                 closestIntersectiontValue = t;
 
