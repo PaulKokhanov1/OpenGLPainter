@@ -82,7 +82,7 @@
 <!-- GOAL -->
 ## Goal
 
-My intentions with this project was to create a simple fishing mechanic that can be used in various 3D games and can easily be expanded whilist using my knowledge of genetic algorithms to create an ecosystem within the game. I also really wanted to get familiar with Unreal Engine and how to integrate direct C++ coding into the workflow.
+My intentions with this project was to create a simple 3D painting tool, one created from scratch using OpenGL. I also really wanted to get familiar with the rendering pipeline and graphics programming in general.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
